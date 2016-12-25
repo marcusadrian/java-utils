@@ -92,14 +92,14 @@ public class PredicateUtils {
 				String propertyName,
 				T value,
 				BiFunction<Expression<? extends Number>, Number, Predicate> numberFunction,
-				BiFunction<Expression<? extends Y>, Y, Predicate> compareFunction
+				BiFunction<Expression<? extends Y>, Y, Predicate> comparableFunction
 				) {
 			if (value instanceof Number) {
 				return numberFunction.apply(root.get(propertyName), (Number) value);
 			} else if (value instanceof Comparable) {
 				@SuppressWarnings({ "unchecked" })
 				Y y = (Y) value;
-				return compareFunction.apply(root.get(propertyName), y);
+				return comparableFunction.apply(root.get(propertyName), y);
 			} else {
 				throw new IllegalArgumentException(String.format("Unsupported type : %s", value.getClass().getName()));
 			}
