@@ -98,8 +98,8 @@ public class PredicateUtils {
 				return numberFunction.apply(root.get(propertyName), (Number) value);
 			} else if (value instanceof Comparable) {
 				@SuppressWarnings({ "unchecked" })
-				Predicate p = builder.lessThan(root.get(propertyName), (Y) value);
-				return p;
+				Y y = (Y) value;
+				return compareFunction.apply(root.get(propertyName), y);
 			} else {
 				throw new IllegalArgumentException(String.format("Unsupported type : %s", value.getClass().getName()));
 			}
