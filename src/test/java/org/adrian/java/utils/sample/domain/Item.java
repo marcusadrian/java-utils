@@ -1,5 +1,7 @@
 package org.adrian.java.utils.sample.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -11,6 +13,8 @@ public class Item extends BaseEntity {
 	private String name;
 	
 	private Integer price;
+	
+	private Date dateOfPurchase;
 	
 	@Column(name = "category")
 	private Integer categoryCode;
@@ -39,5 +43,11 @@ public class Item extends BaseEntity {
 		this.price = price;
 	}
 	
+	public Date getDateOfPurchase() {
+		return dateOfPurchase;
+	}
 	
+	public void setDateOfPurchase(Date dateOfPurchase) {
+		this.dateOfPurchase = dateOfPurchase;
+	}
 }

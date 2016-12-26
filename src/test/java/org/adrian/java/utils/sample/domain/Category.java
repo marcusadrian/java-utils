@@ -4,10 +4,10 @@ import org.adrian.java.utils.transform.EnumSupport;
 
 public enum Category {
 
-	STARTER(1),
-	MAIN_COURSE(2),
-	DESSERT(3),
-	DRINK(4)
+	OPERA(1),
+	ORATORIO(2),
+	SYMPHONIC(3),
+	CHAMBER(4)
 	;
 	
 	private Integer code;
