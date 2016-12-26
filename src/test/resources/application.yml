@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    show-sql: false
+    database: h2
+logging:
+  level:
+    org.adrian: debug
