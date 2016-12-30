@@ -11,26 +11,26 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class SpecificationUtils {
 
-	public static <T, P> Specification<T> toSpecification(String propertyName, P value, ComparatorKeyword comparatorKeyword) {
-		return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+	public static <E, T> Specification<E> toSpecification(String propertyName, T value, ComparatorKeyword comparatorKeyword) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
 			return PredicateUtils.toPredicate(root, builder, propertyName, value, comparatorKeyword);
 		};
 	}
 	
-	public static <T, P, R> Specification<T> toSpecification(String propertyName, P value, ComparatorKeyword comparatorKeyword, Function<P, R> mapper) {
-		return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+	public static <E, T, R> Specification<E> toSpecification(String propertyName, T value, ComparatorKeyword comparatorKeyword, Function<T, R> mapper) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
 			return PredicateUtils.toPredicate(root, builder, propertyName, value, comparatorKeyword, mapper);
 		};
 	}
 	
-	public static <T, P> Specification<T> toSpecification(String propertyName, P value) {
-		return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+	public static <E, T> Specification<E> toSpecification(String propertyName, T value) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
 			return PredicateUtils.toPredicate(root, builder, propertyName, value);
 		};
 	}
 	
-	public static <T, P, R> Specification<T> toSpecification(String propertyName, P value, Function<P, R> mapper) {
-		return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+	public static <E, T, R> Specification<E> toSpecification(String propertyName, T value, Function<T, R> mapper) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
 			return PredicateUtils.toPredicate(root, builder, propertyName, value, mapper);
 		};
 	}

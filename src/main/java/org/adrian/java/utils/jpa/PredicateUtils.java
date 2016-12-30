@@ -39,7 +39,9 @@ public class PredicateUtils {
 		
 		return toPredicate(root, builder, propertyName, value, ComparatorKeyword.DEFAULT, mapper);
 	}
-	
+
+	/*------------------------------------- the inner enum code --------------------------------------------------*/
+	 
 	public static enum ComparatorKeyword {
 		eq("=") {
 			@Override
@@ -50,25 +52,25 @@ public class PredicateUtils {
 		lt("<") {
 			@Override
 			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return toPredicate(root, builder, propertyName, value, builder::lt, builder::lessThan);
+				return createPredicate(root, builder, propertyName, value, builder::lt, builder::lessThan);
 			}
 		},
 		gt(">") {
 			@Override
 			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return toPredicate(root, builder, propertyName, value, builder::gt, builder::greaterThan);
+				return createPredicate(root, builder, propertyName, value, builder::gt, builder::greaterThan);
 			}
 		},
 		le("<=") {
 			@Override
 			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return toPredicate(root, builder, propertyName, value, builder::le, builder::lessThanOrEqualTo);
+				return createPredicate(root, builder, propertyName, value, builder::le, builder::lessThanOrEqualTo);
 			}
 		},
 		ge(">=") {
 			@Override
 			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return toPredicate(root, builder, propertyName, value, builder::ge, builder::greaterThanOrEqualTo);
+				return createPredicate(root, builder, propertyName, value, builder::ge, builder::greaterThanOrEqualTo);
 			}
 		};
 
@@ -86,7 +88,7 @@ public class PredicateUtils {
 		
 		public abstract <E, T> Predicate toPredicate (Root<E> root, CriteriaBuilder builder, String propertyName, T value);
 		
-		private static <E, T, Y extends Comparable<? super Y>> Predicate toPredicate(
+		private static <E, T, Y extends Comparable<? super Y>> Predicate createPredicate(
 				Root<E> root,
 				CriteriaBuilder builder,
 				String propertyName,
@@ -104,5 +106,5 @@ public class PredicateUtils {
 				throw new IllegalArgumentException(String.format("Unsupported type : %s", value.getClass().getName()));
 			}
 		}
-	}
+	} // end inner enum code
 }
