@@ -1,7 +1,6 @@
 package org.adrian.java.utils.jpa;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -24,20 +23,8 @@ public class PredicateUtils {
 		return comparatorKeyword.toPredicate(root, builder, propertyName, value);
 	}
 
-	public static <E, T, R> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value, ComparatorKeyword comparatorKeyword, Function<T, R> mapper) {
-		if (value == null) {
-			return null;
-		}
-		return toPredicate(root, builder, propertyName, mapper.apply(value), comparatorKeyword);
-	}
-	
 	public static <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
 		return toPredicate(root, builder, propertyName, value, ComparatorKeyword.DEFAULT);
-	}
-
-	public static <E, T, R> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value, Function<T, R> mapper) {
-		
-		return toPredicate(root, builder, propertyName, value, ComparatorKeyword.DEFAULT, mapper);
 	}
 
 	/*------------------------------------- the inner enum code --------------------------------------------------*/
