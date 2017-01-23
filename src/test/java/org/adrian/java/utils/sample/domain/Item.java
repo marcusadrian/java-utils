@@ -2,7 +2,6 @@ package org.adrian.java.utils.sample.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.adrian.java.utils.jpa.BaseEntity;
@@ -16,17 +15,8 @@ public class Item extends BaseEntity {
 	
 	private Date dateOfPurchase;
 	
-	@Column(name = "category")
-	private Integer categoryCode;
+	private Category category;
 	
-	public Category getCategory() {
-		return Category.BY_CODE.toEnum(categoryCode);
-	}
-
-	public void setCategory(Category category) {
-		categoryCode = Category.BY_CODE.toId(category);
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -50,4 +40,13 @@ public class Item extends BaseEntity {
 	public void setDateOfPurchase(Date dateOfPurchase) {
 		this.dateOfPurchase = dateOfPurchase;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
 }

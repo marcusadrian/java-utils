@@ -35,14 +35,10 @@ public class SpecificationUtilsTest {
 		Predicate<Item> p = i -> i.getName().equals(name);
 		Specification<Item> specification = SpecificationUtils.toSpecification(PropertyNames.Item.NAME, name);
 		testSpecification(specification, p);
-	}
-	
-	@Test
-	public void toSpecificationMapper() {
-		
+
 		Category category = Category.ORATORIO;
-		Predicate<Item> p = i -> i.getCategory() == category;
-		Specification<Item> specification = SpecificationUtils.toSpecification(PropertyNames.Item.CATEGORY_CODE, category, Category::getCode);
+		p = i -> i.getCategory() == category;
+		specification = SpecificationUtils.toSpecification(PropertyNames.Item.CATEGORY, category);
 		testSpecification(specification, p);
 	}
 	
@@ -76,16 +72,6 @@ public class SpecificationUtilsTest {
 		testSpecification(specification, p);
 
 	}
-	
-	@Test
-	public void toSpecificationComparatorKeywordMapper() {
-		
-		Category category = Category.ORATORIO;
-		Predicate<Item> p = i -> i.getCategory().getCode() <= category.getCode();
-		Specification<Item> specification = SpecificationUtils.toSpecification(PropertyNames.Item.CATEGORY_CODE, category, ComparatorKeyword.le, Category::getCode);
-		testSpecification(specification, p);
-	}
-	
 	
 	private void testSpecification(Specification<Item> specification, Predicate<Item> p) {
 		TestUtils.debug(() -> "---------------------------");

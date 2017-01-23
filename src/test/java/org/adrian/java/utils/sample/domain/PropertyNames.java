@@ -9,7 +9,7 @@ public class PropertyNames {
 		
 		public static final String DATE_OF_PURCHASE = "dateOfPurchase";
 		
-		public static final String CATEGORY_CODE = "categoryCode";
+		public static final String CATEGORY = "category";
 	}
 
 }
