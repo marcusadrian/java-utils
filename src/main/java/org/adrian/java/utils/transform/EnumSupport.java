@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import org.adrian.java.utils.exception.UnknownEnumValueException;
@@ -191,7 +192,10 @@ public class EnumSupport<E extends Enum<E>, ID> {
 	}
 	
 	private String errorMessage(ID value, Enum<?> ... values) {
-		return String.format("Unknown %s value : %s, supported values are : %s", values[0].getClass().getSimpleName(), value, Arrays.asList(values));
+		return String.format("%s : unknown value (%s), supported values are : %s",
+				values[0].getClass().getSimpleName(),
+				value,
+				addIdValues(new TreeSet<>()));
 	}
 
 
