@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.adrian.java.utils.exception.UnknownEnumValueException;
 import org.junit.Test;
 
 
@@ -114,6 +115,19 @@ public class EnumSupportTest {
 		List<Integer> codes = enumSupport.addIdValuesComplementOfOnFailValue(new ArrayList<>());
 		// DEF is the onFailValue and thus ignored when this method is applied
 		assertEquals("[1, 2, 3]", codes.toString());
+	}
+	
+	@Test
+	public void toEnum() {
+		EnumSupport<TestEnum, Integer> enumSupport = new EnumSupport<>(TestEnum.values(), TestEnum::getCode);
+		assertEquals(TestEnum.ABC, enumSupport.toEnum(1));
+		try {
+			enumSupport.toEnum(999);
+			fail();
+		} catch (UnknownEnumValueException e) {
+			String errMess = e.getMessage();
+			assertEquals(errMess, "TestEnum : unknown value (999), supported values are : [1, 2, 3, 4]");
+		}
 	}
 	
 	@Test
