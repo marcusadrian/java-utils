@@ -15,7 +15,7 @@ public class PredicateUtils {
 	private static final Logger LOG = LoggerFactory.getLogger(PredicateUtils.class);
 	
 	
-	public static <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value, ComparatorKeyword comparatorKeyword) {
+	public static <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value, ComparatorKeyword comparatorKeyword) {
 		if (value == null) {
 			return null;
 		}
@@ -23,7 +23,7 @@ public class PredicateUtils {
 		return comparatorKeyword.toPredicate(root, builder, propertyName, value);
 	}
 
-	public static <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+	public static <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
 		return toPredicate(root, builder, propertyName, value, ComparatorKeyword.DEFAULT);
 	}
 
@@ -32,32 +32,32 @@ public class PredicateUtils {
 	public static enum ComparatorKeyword {
 		eq("=") {
 			@Override
-			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
 				return builder.equal(root.<T> get(propertyName), value);
 			}
 		},
 		lt("<") {
 			@Override
-			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return createPredicate(root, builder, propertyName, value, builder::lt, builder::lessThan);
+			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+				return createPredicate(root, propertyName, value, builder::lt, builder::lessThan);
 			}
 		},
 		gt(">") {
 			@Override
-			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return createPredicate(root, builder, propertyName, value, builder::gt, builder::greaterThan);
+			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+				return createPredicate(root, propertyName, value, builder::gt, builder::greaterThan);
 			}
 		},
 		le("<=") {
 			@Override
-			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return createPredicate(root, builder, propertyName, value, builder::le, builder::lessThanOrEqualTo);
+			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+				return createPredicate(root, propertyName, value, builder::le, builder::lessThanOrEqualTo);
 			}
 		},
 		ge(">=") {
 			@Override
-			public <E, T> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
-				return createPredicate(root, builder, propertyName, value, builder::ge, builder::greaterThanOrEqualTo);
+			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
+				return createPredicate(root, propertyName, value, builder::ge, builder::greaterThanOrEqualTo);
 			}
 		};
 
@@ -65,7 +65,7 @@ public class PredicateUtils {
 		
 		private static final ComparatorKeyword DEFAULT = ComparatorKeyword.eq;
 		
-		private ComparatorKeyword(String symbol) {
+		ComparatorKeyword(String symbol) {
 			this.symbol = symbol;
 		}
 		
@@ -73,22 +73,19 @@ public class PredicateUtils {
 			return symbol;
 		}
 		
-		public abstract <E, T> Predicate toPredicate (Root<E> root, CriteriaBuilder builder, String propertyName, T value);
+		public abstract <E, T extends Comparable<? super T>> Predicate toPredicate (Root<E> root, CriteriaBuilder builder, String propertyName, T value);
 		
-		private static <E, T, Y extends Comparable<? super Y>> Predicate createPredicate(
+		private static <E, T extends Comparable<? super T>> Predicate createPredicate(
 				Root<E> root,
-				CriteriaBuilder builder,
 				String propertyName,
 				T value,
 				BiFunction<Expression<? extends Number>, Number, Predicate> numberFunction,
-				BiFunction<Expression<? extends Y>, Y, Predicate> comparableFunction
+				BiFunction<Expression<? extends T>, T, Predicate> comparableFunction
 				) {
 			if (value instanceof Number) {
 				return numberFunction.apply(root.get(propertyName), (Number) value);
 			} else if (value instanceof Comparable) {
-				@SuppressWarnings({ "unchecked" })
-				Y y = (Y) value;
-				return comparableFunction.apply(root.get(propertyName), y);
+				return comparableFunction.apply(root.get(propertyName), value);
 			} else {
 				throw new IllegalArgumentException(String.format("Unsupported type : %s", value.getClass().getName()));
 			}

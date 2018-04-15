@@ -9,16 +9,14 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class SpecificationUtils {
 
-	public static <E, T> Specification<E> toSpecification(String propertyName, T value, ComparatorKeyword comparatorKeyword) {
-		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
-			return PredicateUtils.toPredicate(root, builder, propertyName, value, comparatorKeyword);
-		};
+	public static <E, T extends Comparable<? super T>> Specification<E> toSpecification(String propertyName, T value, ComparatorKeyword comparatorKeyword) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) ->
+				PredicateUtils.toPredicate(root, builder, propertyName, value, comparatorKeyword);
 	}
 	
-	public static <E, T> Specification<E> toSpecification(String propertyName, T value) {
-		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
-			return PredicateUtils.toPredicate(root, builder, propertyName, value);
-		};
+	public static <E, T extends Comparable<? super T>> Specification<E> toSpecification(String propertyName, T value) {
+		return (Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder) ->
+				PredicateUtils.toPredicate(root, builder, propertyName, value);
 	}
 
 }
