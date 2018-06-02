@@ -29,7 +29,7 @@ public class PredicateUtils {
 
 	/*------------------------------------- the inner enum code --------------------------------------------------*/
 	 
-	public static enum ComparatorKeyword {
+	public enum ComparatorKeyword {
 		eq("=") {
 			@Override
 			public <E, T extends Comparable<? super T>> Predicate toPredicate(Root<E> root, CriteriaBuilder builder, String propertyName, T value) {
