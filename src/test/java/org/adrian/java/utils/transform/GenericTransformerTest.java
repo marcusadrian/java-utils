@@ -19,13 +19,13 @@ public class GenericTransformerTest {
 		item.setName("goody");
 		item.setPrice(34);
 		
-		ItemDto dto = transformer.transform(item);
+		ItemDto dto = transformer.apply(item);
 		
 		verifyEquals(item, dto);
 		
 		item.setPrice(45);
 		
-		transformer.update(item, dto);
+		transformer.accept(item, dto);
 		
 		verifyEquals(item, dto);
 		
