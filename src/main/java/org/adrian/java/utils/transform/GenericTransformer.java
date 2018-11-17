@@ -20,8 +20,8 @@ public class GenericTransformer<S, T> {
 
     /**
      * Updates target with the source attributes.
-     * @param not {@code null}
-     * @param not {@code null}
+     * @param source not {@code null}
+     * @param target not {@code null}
      * @return {@code null} if source is {@code null}, otherwise the transformed object
      */
     public void update(S source, T target)
