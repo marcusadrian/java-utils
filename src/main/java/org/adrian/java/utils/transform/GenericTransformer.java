@@ -7,13 +7,22 @@ import java.util.function.Supplier;
 
 public class GenericTransformer<S, T> implements Function<S, T>, BiConsumer<S, T> {
 
-    private Supplier<T> targetSupplier;
-    private BiConsumer<S, T> updater;
+    private final Supplier<T> targetSupplier;
+    private final BiConsumer<S, T> updater;
+    private final Comparator<? super T> sorter;
 
-    public GenericTransformer(Supplier<T> targetSupplier, BiConsumer<S, T> updater) {
+    public GenericTransformer(Supplier<T> targetSupplier,
+                              BiConsumer<S, T> updater,
+                              Comparator<? super T> sorter) {
         super();
         this.targetSupplier = targetSupplier;
         this.updater = updater;
+        this.sorter = sorter;
+    }
+
+    public GenericTransformer(Supplier<T> targetSupplier,
+                              BiConsumer<S, T> updater) {
+        this(targetSupplier, updater, null);
     }
 
     /**
@@ -72,7 +81,7 @@ public class GenericTransformer<S, T> implements Function<S, T>, BiConsumer<S, T
      * @return never {@code null} unless sources is {@code null}
      */
     public List<T> apply(Collection<? extends S> sources) {
-        return apply(sources, (Comparator<? super T>) null);
+        return apply(sources, sorter);
     }
 
     /**
@@ -84,9 +93,21 @@ public class GenericTransformer<S, T> implements Function<S, T>, BiConsumer<S, T
      */
     public <C extends Collection<? super T>> C apply(Collection<? extends S> sources, C targets) {
         Objects.requireNonNull(targets, "targets == null");
-        if (sources != null) {
+        if (sources == null) {
+            return targets;
+        }
+        if (sorter == null) {
             for (S source : sources) {
                 targets.add(apply(source));
+            }
+        } else {
+            List<T> list = new ArrayList<>();
+            for (S source : sources) {
+                list.add(apply(source));
+            }
+            list.sort(sorter);
+            for (T t : list) {
+                targets.add(t);
             }
         }
         return targets;
