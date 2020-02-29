@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class EnumSupportTest {
 
-	private static enum TestEnum {
+	private enum TestEnum {
 		ABC(1), BCD(2), CDE(3), DEF(4);
 
 		private Integer code;
